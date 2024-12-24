@@ -17,6 +17,23 @@ const HeroSection = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Countdown timer logic
+  const [countdown, setCountdown] = useState(50); // Starting countdown at 50 seconds
+  const totalTime = 50; // Total time for countdown in seconds
+
+  useEffect(() => {
+    if (countdown === 0) return; // Stop countdown at 0
+
+    const timer = setInterval(() => {
+      setCountdown((prev) => prev - 1);
+    }, 1000); // Update countdown every second
+
+    return () => clearInterval(timer);
+  }, [countdown]);
+
+  // Circular progress calculation
+  const strokeDashoffset = (100 - (countdown / totalTime) * 100) * 2 * Math.PI * 50;
+
   return (
     <div
       className="relative min-h-screen bg-cover bg-center text-white flex flex-col justify-center items-center"
@@ -63,6 +80,35 @@ const HeroSection = () => {
       </h1>
       <p className="text-lg md:text-2xl mb-6">Join now to play for free</p>
 
+      {/* Circular Countdown Timer */}
+      <div className="relative mb-6">
+        <svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <circle
+            cx="60"
+            cy="60"
+            r="50"
+            stroke="#ddd"
+            strokeWidth="10"
+            fill="none"
+          />
+          <circle
+            cx="60"
+            cy="60"
+            r="50"
+            stroke="#F59E0B"
+            strokeWidth="10"
+            fill="none"
+            strokeDasharray="314"
+            strokeDashoffset={strokeDashoffset}
+            transform="rotate(-90 60 60)"
+            style={{ transition: "stroke-dashoffset 1s ease" }}
+          />
+        </svg>
+        <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-3xl font-bold text-yellow-400">
+          {countdown}s
+        </p>
+      </div>
+
       {/* Join Telegram Button with Icon */}
       <a
         href="https://t.me/Ipl_best_tipper_work1" // Replace with your Telegram link
@@ -83,3 +129,4 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+
